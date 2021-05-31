@@ -12,9 +12,6 @@ import java.util.ArrayList;
 public class Server{
     ServerSocket serverSocket;
     Socket socket;
-    PrintWriter writer;
-    InputStreamReader streamReader;
-    BufferedReader reader;
 
     ArrayList<Socket>usersList;
     ArrayList<Thread>threadsList;
@@ -50,11 +47,13 @@ public class Server{
 
                 Thread t = new Thread(new ChatRoom(socket));
                 threadsList.add(t);
-                flag++;
                 //TODO:怎么获取并设置用户名？
                 t.setName(nameList[flag]);
                 System.out.println("开启线程："+t.getName());
-                t.start();
+                threadsList.get(flag).start();
+                flag++;
+                System.out.println(threadsList.size());
+
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -71,7 +70,7 @@ public class Server{
     }
 
     //群发消息，暂时是socket列表里的所有
-    public void tellEveryone(String message){
+    public void tellEveryone(PrintWriter writer,String message){
         System.out.println(usersList);
         for(Socket socket:usersList){
             try{
@@ -82,7 +81,6 @@ public class Server{
 
             writer.println(message);
             writer.flush();
-            //writer.close();
         }
     }
 
@@ -94,6 +92,9 @@ public class Server{
     //线程任务：客户端与服务器传递消息
     public class ChatRoom implements Runnable{
         Socket s;
+        PrintWriter writer;
+        InputStreamReader streamReader;
+        BufferedReader reader;
 
         public ChatRoom(Socket socket){
             //这玩意好像不好使
@@ -116,13 +117,16 @@ public class Server{
            //TODO:服务器没在一直收消息；
            //一直接受消息···
            while (true){
+
                try{
+                   Thread.sleep(200);
+                   System.out.println(Thread.currentThread().getName());
                    if (reader.ready()){
                        String message = reader.readLine();
                        System.out.println(message);
-                       tellEveryone(message);
+                       tellEveryone(writer,message);
                    }
-               }catch (IOException ex){
+               }catch (Exception ex){
                    System.out.println("error here！");
                    //ex.printStackTrace();
                }

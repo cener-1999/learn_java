@@ -22,7 +22,7 @@ public class Send{
     public void sendMessage(){
         String message;
         //get user input:
-        System.out.print("请输入");
+        System.out.println("请输入");
         Scanner scanner = new Scanner(System.in);
         message = scanner.nextLine();
 

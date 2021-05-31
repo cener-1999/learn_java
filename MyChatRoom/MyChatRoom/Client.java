@@ -37,7 +37,10 @@ public class Client {
         Thread getMessageThread = new Thread(new GettingMessage(socket));
         Thread sendMessageThread = new Thread(new SendingMessage(socket));
         getMessageThread.start();
-        sendMessageThread.start();
+        //sendMessageThread.start();
+        sender.sendMessage();
+        sender.sendMessage();
+        sender.sendMessage();
     }
 
     public static void main(String[] args) {
@@ -60,6 +63,11 @@ public class Client {
 
         public void run(){
             while (true) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 sender.sendMessage();
             }
         }
@@ -85,13 +93,14 @@ public class Client {
         public void run() {
             while (true) {
                 try {
+                    Thread.sleep(200);
                     if (true) {
                         String message = reader.readLine();
                         System.out.println(message);
                     } else {
                         System.out.println("not ready???");
                     }
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
