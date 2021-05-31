@@ -26,6 +26,7 @@ public class Server{
     String[] nameList = {"张三","李四","王五","钱老六"};
 
 
+    //初始化
     public Server() {
         usersList = new ArrayList<>();
         threadsList = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Server{
         }
     }
 
+    //运行起点
     public void go(){
 
         while(true){
@@ -68,7 +70,6 @@ public class Server{
         server.go();
     }
 
-
     //群发消息，暂时是socket列表里的所有
     public void tellEveryone(String message){
         System.out.println(usersList);
@@ -85,8 +86,12 @@ public class Server{
         }
     }
 
+    //TODO:实现私聊
+    public void ATellB(){
+
+    }
+
     //线程任务：客户端与服务器传递消息
-    //
     public class ChatRoom implements Runnable{
         Socket s;
 
@@ -108,7 +113,7 @@ public class Server{
            writer.println(welcomeMessage);
            writer.flush();
 
-
+           //TODO:服务器没在一直收消息；
            //一直接受消息···
            while (true){
                try{
@@ -117,13 +122,10 @@ public class Server{
                        System.out.println(message);
                        tellEveryone(message);
                    }
-
                }catch (IOException ex){
                    System.out.println("error here！");
                    //ex.printStackTrace();
                }
-
-
            }
         }
     }

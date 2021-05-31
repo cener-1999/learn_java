@@ -11,6 +11,11 @@ public class Send{
     //绑定socket
     public Send(Socket socket){
         s = socket;
+        try{
+            writer = new PrintWriter(s.getOutputStream());
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     //传递消息的方法
@@ -20,16 +25,8 @@ public class Send{
         System.out.print("请输入");
         Scanner scanner = new Scanner(System.in);
         message = scanner.nextLine();
-        //System.out.println(message);
 
-        try{
-            writer = new PrintWriter(s.getOutputStream());
-            writer.println(message);
-            writer.flush();
-
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
-
+        writer.println(message);
+        writer.flush();
     }
 }
